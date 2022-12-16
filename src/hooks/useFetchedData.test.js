@@ -8,7 +8,7 @@ describe("useFetchedData", () => {
     jest.clearAllMocks();
   });
 
-  it("should return the initial values for data, error and loading", async () => {
+  it("should return the initial values for `data`, error and loading", async () => {
     const { result } = renderHook(() => useFetchedData());
     const { data, error, loading } = result.current;
 
