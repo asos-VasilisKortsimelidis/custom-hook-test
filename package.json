@@ -15,7 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:coverage": "react-scripts test --coverage",
+    "test:coverage": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -36,7 +36,16 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@testing-library/react-hooks": "^8.0.1"
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 90,
+        "statements": 90
+      }
+    }
   }
 }

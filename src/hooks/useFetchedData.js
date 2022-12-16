@@ -18,9 +18,9 @@ const useFetchedData = () => {
 
         const json = await response.json();
         setData(json);
-        setLoading(false);
       } catch (error) {
         setError(error);
+      } finally {
         setLoading(false);
       }
     };

@@ -20,6 +20,7 @@ describe("useFetchedData", () => {
 
   describe("when data is fetched successfully", () => {
     let mockedData;
+
     beforeEach(() => {
       mockedData = [
         {
@@ -29,12 +30,15 @@ describe("useFetchedData", () => {
           userId: 1,
         },
       ];
+
       global.fetch.mockResolvedValue({
         json: jest.fn().mockResolvedValue(mockedData),
       });
     });
+
     it("should return data", async () => {
       const { result } = renderHook(() => useFetchedData());
+
       await waitFor(() =>
         expect(result.current).toEqual({
           data: mockedData,
@@ -43,6 +47,7 @@ describe("useFetchedData", () => {
         })
       );
     });
+
     describe("the loading property", () => {
       it("should initially return true and then false", async () => {
         const { result } = renderHook(() => useFetchedData());
@@ -71,18 +76,22 @@ describe("useFetchedData", () => {
         expect(error).toBe(mockedError);
       });
     });
+  });
 
-    describe("the loading property", () => {
-      it("should initially return true and then false", async () => {
-        const { result } = renderHook(() => useFetchedData());
-        const { loading } = result.current;
-        expect(loading).toBe(true);
+  describe("should abort the fetch request on unmount", () => {
+    const mockedAbortController = {
+      abort: jest.fn(),
+    };
 
-        await waitFor(() => {
-          const { loading } = result.current;
-          expect(loading).toBe(false);
-        });
-      });
+    beforeEach(() => {
+      global.AbortController = jest.fn(() => mockedAbortController);
+    });
+
+    it("should abort the fetch request", async () => {
+      const { unmount } = renderHook(() => useFetchedData());
+      unmount();
+
+      expect(mockedAbortController.abort).toHaveBeenCalled();
     });
   });
 });
